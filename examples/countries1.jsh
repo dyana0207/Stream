@@ -4,100 +4,100 @@ var countries = new CountryRepository().getAll();
 // 1. Prints country names:
 
 countries.stream().
-  map(Country::getName).
+  map(Country::name).
   forEach(System.out::println);
 
 // 2. Prints the capital of each country in alphabetical order:
 
 countries.stream().
-  map(Country::getCapital).
+  map(Country::capital).
   sorted(Comparator.nullsFirst(Comparator.naturalOrder())).
   forEach(System.out::println);
 
 // 3. Prints the capital of each country in reverse alphabetical order:
 
 countries.stream().
-  map(Country::getCapital).
+  map(Country::capital).
   sorted(Comparator.nullsLast(Comparator.reverseOrder())).
   forEach(System.out::println);
 
 // 4. Returns the maximum population:
 
 countries.stream().
-  mapToLong(Country::getPopulation).
+  mapToLong(Country::population).
   max().
   getAsLong();
 
 // 5. Returns population average:
 
 countries.stream().
-  mapToLong(Country::getPopulation).
+  mapToLong(Country::population).
   average().
   getAsDouble();
 
 // 6. Returns summary statistics about the population field:
 
 countries.stream().
-  mapToLong(Country::getPopulation).
+  mapToLong(Country::population).
   summaryStatistics();
 
 // 7. Prints the names of European countries:
 
 countries.stream().
-  filter(country -> country.getRegion() == Region.EUROPE).
-  map(Country::getName).
+  filter(country -> country.region() == Region.EUROPE).
+  map(Country::name).
   forEach(System.out::println);
 
 // 8. Returns the number of European countries:
 
 countries.stream().
-  filter(country -> country.getRegion() == Region.EUROPE).
-  map(Country::getName).
+  filter(country -> country.region() == Region.EUROPE).
+  map(Country::name).
   count();
 
 // 9. Returns the number of independent countries:
 
 countries.stream().
-  filter(country -> country.isIndependent()).
+  filter(country -> country.independent()).
   count();
 
 countries.stream().
-  filter(Country::isIndependent).
+  filter(Country::independent).
   count();
 
 // 10. Prints all countries with population below 100:
 
 countries.stream().
-  filter(country -> country.getPopulation() < 100).
+  filter(country -> country.population() < 100).
   forEach(System.out::println);
 
 // 11. Prints the names of countries with population below 100:
 
 countries.stream().
-  filter(country -> country.getPopulation() < 100).
-  map(Country::getName).
+  filter(country -> country.population() < 100).
+  map(Country::name).
   forEach(System.out::println);
 
 // 12. Returns the sum of population of European countries:
 
 countries.stream().
-  filter(country -> country.getRegion() == Region.EUROPE).
-  mapToLong(Country::getPopulation).
+  filter(country -> country.region() == Region.EUROPE).
+  mapToLong(Country::population).
   sum();
 
 // 13. Prints the population of European countries in ascending order:
 
 countries.stream().
-  filter(country -> country.getRegion() == Region.EUROPE).
-  mapToLong(Country::getPopulation).
+  filter(country -> country.region() == Region.EUROPE).
+  mapToLong(Country::population).
   sorted().
   forEach(System.out::println)
 
 // 14. Prints the population of European countries in descending order:
 
 countries.stream().
-  filter(country -> country.getRegion() == Region.EUROPE).
-  mapToLong(Country::getPopulation).
+  filter(country -> country.region() == Region.EUROPE).
+  mapToLong(Country::population).
   boxed(). // returns a Stream of java.lang.Long objects (required because LongStream has only a no-argument sorted() operation)
   sorted(Comparator.reverseOrder()).
   forEach(System.out::println)
@@ -105,81 +105,81 @@ countries.stream().
 // 15. Returns the European country with the highest population:
 
 Country mostPopulousCountry = countries.stream().
-  filter(country -> country.getRegion() == Region.EUROPE).
-  max(Comparator.comparingLong(Country::getPopulation)).
+  filter(country -> country.region() == Region.EUROPE).
+  max(Comparator.comparingLong(Country::population)).
   get();
 
 // 16. Returns the name of the European country with the highest population:
 
 countries.stream().
-  filter(country -> country.getRegion() == Region.EUROPE).
-  max(Comparator.comparingLong(Country::getPopulation)).
+  filter(country -> country.region() == Region.EUROPE).
+  max(Comparator.comparingLong(Country::population)).
   get().
-  getName();
+  name();
 
 // 17. Prints the names of the first five countries:
 
 countries.stream().
-  map(Country::getName).
+  map(Country::name).
   limit(5).
   forEach(System.out::println);
 
 // 18. Returns whether there is at least one country with 0 population:
 
-countries.stream().anyMatch(country -> country.getPopulation() == 0);
+countries.stream().anyMatch(country -> country.population() == 0);
 
 // 19. Returns whether each country has at least one timezone:
 
-countries.stream().allMatch(country -> ! country.getTimezones().isEmpty());
-countries.stream().allMatch(country -> country.getTimezones().size() > 0);
+countries.stream().allMatch(country -> ! country.timezones().isEmpty());
+countries.stream().allMatch(country -> country.timezones().size() > 0);
 
 // 20. Returns the first country whose name starts with ‘H’:
 
 countries.stream().
-  filter(country -> country.getName().charAt(0) == 'H').
+  filter(country -> country.name().charAt(0) == 'H').
   findFirst();
 
 countries.stream().
-  filter(country -> country.getName().startsWith("H")).
+  filter(country -> country.name().startsWith("H")).
   findFirst();
 
 // 21. Returns the number of all distinct timezones:
 
 long numberOfTimezones = countries.stream().
-  flatMap(country -> country.getTimezones().stream()).
+  flatMap(country -> country.timezones().stream()).
   distinct().
   count();
 
 // 22. Prints all distinct timezones of European countries:
 
 countries.stream().
-  filter(country -> country.getRegion() == Region.EUROPE).
-  flatMap(country -> country.getTimezones().stream()).
+  filter(country -> country.region() == Region.EUROPE).
+  flatMap(country -> country.timezones().stream()).
   distinct().
   forEach(System.out::println);
 
 // 23. Prints the name and population of each country in descending order of population:
 
 countries.stream().
-  sorted(Comparator.comparingLong(Country::getPopulation)).
-  forEach(country -> System.out.printf("%s: %d\n", country.getName(), country.getPopulation()));
+  sorted(Comparator.comparingLong(Country::population)).
+  forEach(country -> System.out.printf("%s: %d\n", country.name(), country.population()));
 
 // 24. Returns the length of the longest country name:
 
 countries.stream().
-  map(Country::getName).
+  map(Country::name).
   max(Comparator.comparingInt(String::length)).
   get();
 
 // 25. Prints the capital of each country in ascending order of length:
 
 countries.stream().
-  map(Country::getCapital).
+  map(Country::capital).
   sorted(Comparator.nullsFirst(Comparator.comparingInt(String::length))).
   forEach(System.out::println);
 
 // 26. Prints the capital of each country in ascending order of length and then in alphabetical order:
 
 countries.stream().
-  map(Country::getCapital). sorted(Comparator.nullsFirst(Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder()))).
+  map(Country::capital). sorted(Comparator.nullsFirst(Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder()))).
   forEach(System.out::println);
